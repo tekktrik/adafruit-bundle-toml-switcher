@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
+# Files specific for this script
+toml_switcher/*
+!/toml_switcher/__main__.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
