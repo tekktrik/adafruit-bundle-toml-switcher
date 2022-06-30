@@ -3,8 +3,9 @@
 # SPDX-License-Identifier: MIT
 
 # Files specific for this script
-toml_switcher/*
-!/toml_switcher/__main__.py
+toml_switcher/git_functionality.py
+toml_switcher/iterate_libraries.py
+toml_switcher/library_functions.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
