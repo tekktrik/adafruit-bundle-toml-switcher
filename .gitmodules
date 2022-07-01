@@ -5,3 +5,6 @@
 [submodule "submodules/adabot"]
 	path = submodules/adabot
 	url = https://github.com/adafruit/adabot.git
+[submodule "submodules/bundle"]
+	path = submodules/bundle
+	url = https://github.com/adafruit/Adafruit_CircuitPython_Bundle.git
