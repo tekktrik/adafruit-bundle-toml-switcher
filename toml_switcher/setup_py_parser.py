@@ -2,7 +2,16 @@
 #
 # SPDX-License-Identifier: MIT
 
+# pylint: disable=unused-variable,unused-argument,global-statement,invalid-name
+
 """
+``setup_py_parser.py``
+======================
+
+Functionality for getting information from ``setup.py``
+
+* Author(s): Alec Delaney
+
 Thanks to the Dependabot Core team, for the inspiration/idea on how to
 parse the ``setup.py`` file.
 """
@@ -11,11 +20,17 @@ import io
 import re
 from typing import Any
 import setuptools
-import pprint
 
 value_dict = {}
 
+
 def parse_setup_py(file_contents: str, keys: list[str]) -> dict[str, Any]:
+    """Parses ``setup.py`` for the requested information
+
+    :param str file_contents: The file contents of ``setup.py``
+    :param keys: A list of arguments of ``setup()`` to grab values from
+    :type keys: [str, ...]
+    """
 
     global value_dict
     value_dict = {}
@@ -33,7 +48,7 @@ def parse_setup_py(file_contents: str, keys: list[str]) -> dict[str, Any]:
     def fake_parse(*args, **kwargs):
         return []
 
-    global fake_open
+    global fake_open  # pylint: disable=global-variable-undefined
 
     def fake_open(*args, **kwargs):
         content = (
@@ -65,9 +80,6 @@ def parse_setup_py(file_contents: str, keys: list[str]) -> dict[str, Any]:
     __license__ = "something"
     __url__ = "something"
 
-
-    __name__ = "__main__"
-
-    exec(file_contents)
+    exec(file_contents)  # pylint: disable=exec-used
 
     return value_dict

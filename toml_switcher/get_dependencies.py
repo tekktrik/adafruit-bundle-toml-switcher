@@ -2,6 +2,16 @@
 #
 # SPDX-License-Identifier: MIT
 
+"""
+``get_dependencies.py``
+=======================
+
+Functionality for getting and recording dependencies from the bundle libraries
+
+* Author(s): Alec Delaney
+
+"""
+
 from typing import Any
 import os
 import typer
@@ -13,11 +23,14 @@ from setup_py_parser import parse_setup_py
 
 app = typer.Typer()
 
+
 @app.command()
-def check_dependencies(output_dir: str = "reqlists", bundle_path: str = "submodules/bundle") -> None:
+def check_dependencies(
+    output_dir: str = "reqlists", bundle_path: str = "submodules/bundle"
+) -> None:
     """Check the ``requirements.txt`` and ``setup.py`` dependencies and record them.
     If they don't match, record both notify the user
-    
+
     :param str output_dir: The output directory filepath
     :param str bundle_path: The filepath to the bundle directory
     """
@@ -42,11 +55,14 @@ def check_dependencies(output_dir: str = "reqlists", bundle_path: str = "submodu
                 reqfile.write("".join([req + "\n" for req in reqs_dict["setup.py"]]))
                 reqfile.write("=========================================\n")
                 reqfile.write("### requirements.txt ###\n")
-                reqfile.write("".join([req + "\n" for req in reqs_dict["requirements.txt"]]))
+                reqfile.write(
+                    "".join([req + "\n" for req in reqs_dict["requirements.txt"]])
+                )
+
 
 def check_repo_deps(lib_path: StrPath) -> dict[str, list[str]]:
     """Check the dependencies of a given repository
-    
+
     :param Repository lib_repo: The GitHub repository object
     """
 
@@ -62,8 +78,12 @@ def check_repo_deps(lib_path: StrPath) -> dict[str, list[str]]:
     except FileNotFoundError:
         setup_py_set = None
 
-    with open(req_txt_fp, mode="r",encoding="utf-8") as reqtxt:
-        requirements_txt_set: set[str] = set([line.strip() for line in reqtxt if line.strip() and not line.strip().startswith("#")])
+    with open(req_txt_fp, mode="r", encoding="utf-8") as reqtxt:
+        requirements_txt_set: set[str] = {
+            line.strip()
+            for line in reqtxt
+            if line.strip() and not line.strip().startswith("#")
+        }
 
     if setup_py_set:
         parsed_setup_set = set()
@@ -90,23 +110,26 @@ def check_repo_deps(lib_path: StrPath) -> dict[str, list[str]]:
             "requirements.txt": requirements_txt_set,
             "setup.py": setup_py_set,
         }
-    else:
-        # Only req
-        # Write req.txt
-        return {"union": requirements_txt_set}
+
+    # Only req
+    # Write req.txt
+    return {"union": requirements_txt_set}
 
 
-def check_all_repo_deps(bundle_path: str) -> list[LocalLibFunc_IterResult[dict[str, Any]]]:
+def check_all_repo_deps(
+    bundle_path: str,
+) -> list[LocalLibFunc_IterResult[dict[str, Any]]]:
     """Check all bundles in the repo
-    
+
     :param str bundle_path: The filepath to the bundle"""
 
     return iter_local_bundle_with_func(bundle_path, [(check_repo_deps, (), {})])
 
+
 @app.command()
 def gist_upload_dir(gh_token: str, directory: str = "reqlists") -> None:
     """Upload the directory as a gist of multiple files
-    
+
     :param str gh_token: The GitHub token used for authorization
     :param str directory: The directory to upload:
     """
@@ -122,9 +145,14 @@ def gist_upload_dir(gh_token: str, directory: str = "reqlists") -> None:
                 ifc = InputFileContent(contents)
                 gist_payload[os.path.basename(gist_filepath)] = ifc
 
-    gh = Github(gh_token)
-    user = gh.get_user()
-    user.create_gist(public=True, files=gist_payload, description="A collection of all the requirements from the Adafruit CircuitPython Bundle")
+    github = Github(gh_token)
+    user = github.get_user()
+    user.create_gist(
+        public=True,
+        files=gist_payload,
+        description="A collection of all the requirements from the Adafruit CircuitPython Bundle",
+    )
+
 
 if __name__ == "__main__":
     app()
