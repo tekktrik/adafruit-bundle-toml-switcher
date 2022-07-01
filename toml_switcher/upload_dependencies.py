@@ -46,3 +46,7 @@ def gist_upload_dir(gh_token: str, directory: str = "reqlists") -> None:
         files=gist_payload,
         description="A collection of all the requirements from the Adafruit CircuitPython Bundle",
     )
+
+
+if __name__ == "__main__":
+    app()
