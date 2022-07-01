@@ -15,8 +15,6 @@ Functionality for getting and recording dependencies from the bundle libraries
 from typing import Any
 import os
 import typer
-from github import Github
-from github.InputFileContent import InputFileContent
 from iterate_libraries import iter_local_bundle_with_func, LocalLibFunc_IterResult
 from library_functions import StrPath
 from setup_py_parser import parse_setup_py
@@ -124,34 +122,6 @@ def check_all_repo_deps(
     :param str bundle_path: The filepath to the bundle"""
 
     return iter_local_bundle_with_func(bundle_path, [(check_repo_deps, (), {})])
-
-
-@app.command()
-def gist_upload_dir(gh_token: str, directory: str = "reqlists") -> None:
-    """Upload the directory as a gist of multiple files
-
-    :param str gh_token: The GitHub token used for authorization
-    :param str directory: The directory to upload:
-    """
-
-    gist_filepaths = [os.path.join(directory, file) for file in os.listdir(directory)]
-
-    gist_payload = {}
-
-    for gist_filepath in gist_filepaths:
-        with open(gist_filepath, mode="r", encoding="utf-8") as gistfile:
-            contents = gistfile.read()
-            if contents:
-                ifc = InputFileContent(contents)
-                gist_payload[os.path.basename(gist_filepath)] = ifc
-
-    github = Github(gh_token)
-    user = github.get_user()
-    user.create_gist(
-        public=True,
-        files=gist_payload,
-        description="A collection of all the requirements from the Adafruit CircuitPython Bundle",
-    )
 
 
 if __name__ == "__main__":
