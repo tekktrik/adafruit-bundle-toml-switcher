@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022 Alec Delaney, written for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
+
 while read filename; do
     if [ "$1" == "install" ]; then
         echo "Copying $filename to toml_switcher/"
