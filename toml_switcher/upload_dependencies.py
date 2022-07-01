@@ -19,6 +19,7 @@ from github.InputFileContent import InputFileContent
 
 app = typer.Typer()
 
+
 @app.command()
 def gist_upload_dir(gh_token: str, directory: str = "reqlists") -> None:
     """Upload the directory as a gist of multiple files

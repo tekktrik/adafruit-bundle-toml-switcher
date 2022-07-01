@@ -18,10 +18,13 @@ import typer
 
 app = typer.Typer()
 
+
 @app.command()
-def clean_dependencies(input_dir: str = "reqlists", output_dir: Optional[str] = None) -> None:
+def clean_dependencies(
+    input_dir: str = "reqlists", output_dir: Optional[str] = None
+) -> None:
     """Read the dependency lists, clean them, and rewrite them to a new directory
-    
+
     :param str input_dir: The input directory name
     :param str output_dir: The output directory name
     """
@@ -44,16 +47,26 @@ def clean_dependencies(input_dir: str = "reqlists", output_dir: Optional[str] = 
 
     for dict_name, dict_req in req_dict.items():
         dict_req = [req.replace(" ", "") for req in dict_req]
-        if dict_req and dict_req[0].lower().replace("_", "-").startswith("adafruit-blinka"):
-            dict_req[0] = dict_req[0].lower().replace("_", "-").replace("adafruit-blinka", "Adafruit-Blinka")
+        if dict_req and dict_req[0].lower().replace("_", "-").startswith(
+            "adafruit-blinka"
+        ):
+            dict_req[0] = (
+                dict_req[0]
+                .lower()
+                .replace("_", "-")
+                .replace("adafruit-blinka", "Adafruit-Blinka")
+            )
         cap_dict[dict_name] = dict_req
-        
+
     if output_dir:
         save_cleaned_deps(cap_dict, output_dir)
 
-def save_cleaned_deps(requirements: dict[str, list[str]], output_dir: str = "cleanreqs") -> None:
+
+def save_cleaned_deps(
+    requirements: dict[str, list[str]], output_dir: str = "cleanreqs"
+) -> None:
     """Save the cleaned requirements lists
-    
+
     :param dict requirements: The requirements dict
     :param str output_dir: The output directory of clean requirements
     """
@@ -64,6 +77,7 @@ def save_cleaned_deps(requirements: dict[str, list[str]], output_dir: str = "cle
         req_fp = os.path.join(output_dir, req_fn)
         with open(req_fp, mode="w", encoding="utf-8") as reqfile:
             reqfile.write("".join(req + "\n" for req in reqlist))
+
 
 if __name__ == "__main__":
     app()
