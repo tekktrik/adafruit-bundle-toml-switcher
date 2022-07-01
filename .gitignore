@@ -6,6 +6,7 @@
 toml_switcher/git_functionality.py
 toml_switcher/iterate_libraries.py
 toml_switcher/library_functions.py
+reqlists/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
