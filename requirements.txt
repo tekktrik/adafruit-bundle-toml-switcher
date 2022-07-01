@@ -2,4 +2,5 @@
 #
 # SPDX-License-Identifier: MIT
 
+typing_extensions >= 3.7.4.2
 typer ~= 0.4.1
