@@ -47,6 +47,8 @@ def create_toml(
     except FileNotFoundError:
         return False, disabled_content
 
+    setup_contents = setup_contents.replace("open_codec(", "open(")
+
     setup_dict = parse_setup_py(
         setup_contents, [*REPLACE_MAP.keys(), "keywords", "py_modules", "packages"]
     )
