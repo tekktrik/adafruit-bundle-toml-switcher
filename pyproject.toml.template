@@ -18,7 +18,7 @@ authors = [
 ]
 urls = {Homepage = "{{URL}}"}
 keywords = [
-    {{KEYWORDS}}]
+{{KEYWORDS}}]
 license = {text = "MIT"}
 classifiers = [
     "Intended Audience :: Developers",
