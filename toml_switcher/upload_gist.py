@@ -21,7 +21,7 @@ app = typer.Typer()
 
 
 @app.command()
-def gist_upload_dir(gh_token: str, directory: str = "reqlists") -> None:
+def gist_upload_dir(gh_token: str, directory: str) -> None:
     """Upload the directory as a gist of multiple files
 
     :param str gh_token: The GitHub token used for authorization
