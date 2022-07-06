@@ -9,6 +9,7 @@ toml_switcher/library_functions.py
 reqlists/
 cleanreqs/
 tomls/
+opttomls/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
