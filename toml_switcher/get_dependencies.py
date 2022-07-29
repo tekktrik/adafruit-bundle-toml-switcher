@@ -61,7 +61,7 @@ def check_dependencies(
 def check_repo_deps(lib_path: StrPath) -> dict[str, list[str]]:
     """Check the dependencies of a given repository
 
-    :param Repository lib_repo: The GitHub repository object
+    :param StrPath lib_path: The repository path
     """
 
     setup_py_fp = os.path.join(lib_path, "setup.py")
