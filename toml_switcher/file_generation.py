@@ -24,12 +24,13 @@ app = typer.Typer()
 def overwrite_workflow(
     lib_path: StrPath, template_filepath: StrPath, copy_local_filepath: StrPath
 ) -> None:
-    """Function for copying files to repositories
+    """Library function for copying files to repositories
 
     :param StrPath lib_path: The repository path
     :param StrPath template_filepath: The filepath of the template to copy
     :param StrPath copy_local_filepath: The local, relative path of the file in the repository
     """
+
     copy_filepath = os.path.join(lib_path, copy_local_filepath)
     if not os.path.exists(copy_filepath):
         return
@@ -42,6 +43,7 @@ def overwrite_workflows(bundle_path: str) -> list[LocalLibFunc_IterResult[None]]
 
     :param str bundle_path: The filepath to the bundle
     """
+
     return iter_local_bundle_with_func(
         bundle_path,
         [
@@ -55,6 +57,59 @@ def overwrite_workflows(bundle_path: str) -> list[LocalLibFunc_IterResult[None]]
                 ("./release.yml.template", ".github/workflows/release.yml"),
                 {},
             ),
+        ],
+    )
+
+
+def copypaste_toml(
+    lib_path: StrPath, tomls_folder: StrPath, *, toml_suffix: str = "_pyproject.toml"
+) -> bool:
+    """Library function for copy/pasting the generated `pyproject.toml` file
+
+    :param StrPath lib_path: The repository path
+    :param StrPath tomls_folder: The folder path where the generate `pyproject.toml`
+        files are located
+    :param str toml_suffix: The common suffix of the `pyproject.toml` files
+    """
+
+    libname = os.path.basename(lib_path)
+    toml_filepath = os.path.join(tomls_folder, libname + toml_suffix)
+    dest_filepath = os.path.join(lib_path, "pyproject.toml")
+    try:
+        shutil.copyfile(toml_filepath, dest_filepath)
+        return True
+    except FileNotFoundError:
+        return False
+
+
+def remove_setup_py(lib_path: StrPath) -> bool:
+    """Library function for removing `setup.py
+
+    :param StrPath lib_path: The repository path
+    """
+
+    setup_py_filepath = os.path.join(lib_path, "setup.py")
+    try:
+        os.remove(setup_py_filepath)
+        return True
+    except FileNotFoundError:
+        return False
+
+
+@app.command()
+def toml_swap(
+    bundle_path: str, tomls_folder: str
+) -> list[LocalLibFunc_IterResult[bool]]:
+    """Bundle function for swapping from `setup.py` to `pyproject.toml`
+
+    :param str bundle_path: The filepath to the bundle
+    """
+
+    return iter_local_bundle_with_func(
+        bundle_path,
+        [
+            (copypaste_toml, (tomls_folder,), {}),
+            (remove_setup_py, (), {}),
         ],
     )
 
