@@ -21,7 +21,6 @@ from iterate_libraries import iter_local_bundle_with_func, LocalLibFunc_IterResu
 app = typer.Typer()
 
 
-@app.command()
 def overwrite_workflow(
     lib_path: StrPath, template_filepath: StrPath, copy_local_filepath: StrPath
 ) -> None:
@@ -37,6 +36,7 @@ def overwrite_workflow(
     shutil.copyfile(template_filepath, copy_filepath)
 
 
+@app.command()
 def overwrite_workflows(bundle_path: str) -> list[LocalLibFunc_IterResult[None]]:
     """Bundle function for copying template files to the bundle repositories
 
@@ -57,3 +57,7 @@ def overwrite_workflows(bundle_path: str) -> list[LocalLibFunc_IterResult[None]]
             ),
         ],
     )
+
+
+if __name__ == "__main__":
+    app()
