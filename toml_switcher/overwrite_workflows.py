@@ -25,13 +25,15 @@ app = typer.Typer()
 def overwrite_workflow(
     lib_path: StrPath, template_filepath: StrPath, copy_local_filepath: StrPath
 ) -> None:
+    """Function for copying files to repositories"""
+    copy_filepath = os.path.join(lib_path, copy_local_filepath)
     if not os.path.exists(copy_filepath):
         return
-    copy_filepath = os.path.join(lib_path, copy_local_filepath)
     shutil.copyfile(template_filepath, copy_filepath)
 
 
 def overwrite_workflows(bundle_path: str) -> list[LocalLibFunc_IterResult[None]]:
+    """Bundle function for copying template files to the bundle repositories"""
     return iter_local_bundle_with_func(
         bundle_path,
         [
