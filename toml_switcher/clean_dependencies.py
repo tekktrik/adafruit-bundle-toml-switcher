@@ -79,7 +79,9 @@ def save_cleaned_deps(
 
         req_fp = os.path.join(output_dir, req_fn)
         with open(req_fp, mode="w", encoding="utf-8") as reqfile:
-            reqfile.write("# SPDX-FileCopyrightText: 2022 Alec Delaney, for Adafruit Industries\n")
+            reqfile.write(
+                "# SPDX-FileCopyrightText: 2022 Alec Delaney, for Adafruit Industries\n"
+            )
             reqfile.write("#\n")
             reqfile.write("# SPDX-License-Identifier: Unlicense\n")
             if reqlist:
@@ -93,7 +95,9 @@ def save_cleaned_deps(
         opt_fp = os.path.splitext(req_fp)[0] + "_opt.txt"
 
         with open(opt_fp, mode="w", encoding="utf-8") as optfile:
-            optfile.write("# SPDX-FileCopyrightText: 2022 Alec Delaney, for Adafruit Industries\n")
+            optfile.write(
+                "# SPDX-FileCopyrightText: 2022 Alec Delaney, for Adafruit Industries\n"
+            )
             optfile.write("#\n")
             optfile.write("# SPDX-License-Identifier: Unlicense\n")
             if optional_reqs:

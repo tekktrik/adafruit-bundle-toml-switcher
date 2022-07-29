@@ -37,9 +37,14 @@ def overwrite_workflow(
     shutil.copyfile(template_filepath, copy_filepath)
 
 
-def overwrite_reqs(lib_path: StrPath, copy_folder: StrPath, copy_suffix: StrPath, paste_filename: StrPath) -> None:
+def overwrite_reqs(
+    lib_path: StrPath,
+    copy_folder: StrPath,
+    copy_suffix: StrPath,
+    paste_filename: StrPath,
+) -> None:
     """Library function to force copy/paste a requirements file
-    
+
     :param StrPath lib_path: The repository path
     :param StrPath copy_folder: The folder containing the requirements files
     :param StrPath copy_suffix: The suffix of the copy file
@@ -128,10 +133,13 @@ def toml_swap(
         ],
     )
 
+
 @app.command()
-def add_requirements_files(bundle_path: str, reqs_folder: str) -> list[LocalLibFunc_IterResult[bool]]:
+def add_requirements_files(
+    bundle_path: str, reqs_folder: str
+) -> list[LocalLibFunc_IterResult[bool]]:
     """Bundle function to copy/paste the requirements files
-    
+
     :param str bundle_path: The filepath to the bundle
     :param str reqs_folder: The filepath to the folder containing the requirements files
     """
@@ -140,8 +148,12 @@ def add_requirements_files(bundle_path: str, reqs_folder: str) -> list[LocalLibF
         bundle_path,
         [
             (overwrite_reqs, (reqs_folder, "_req.txt", "requirements.txt"), {}),
-            (overwrite_reqs, (reqs_folder, "_req_opt.txt", "optional_requirements.txt"), {}),
-        ]
+            (
+                overwrite_reqs,
+                (reqs_folder, "_req_opt.txt", "optional_requirements.txt"),
+                {},
+            ),
+        ],
     )
 
 
