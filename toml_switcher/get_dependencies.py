@@ -27,7 +27,7 @@ def check_dependencies(
     output_dir: str = "reqlists", bundle_path: str = "submodules/bundle"
 ) -> None:
     """Check the ``requirements.txt`` and ``setup.py`` dependencies and record them.
-    If they don't match, record both notify the user
+    If they don't match, record both and notify the user
 
     :param str output_dir: The output directory filepath
     :param str bundle_path: The filepath to the bundle directory
