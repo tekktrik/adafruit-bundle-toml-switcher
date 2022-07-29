@@ -74,9 +74,32 @@ def save_cleaned_deps(
     os.makedirs(output_dir)
 
     for req_fn, reqlist in requirements.items():
+
+        optional_reqs = []
+
         req_fp = os.path.join(output_dir, req_fn)
         with open(req_fp, mode="w", encoding="utf-8") as reqfile:
-            reqfile.write("".join(req + "\n" for req in reqlist))
+            reqfile.write("# SPDX-FileCopyrightText: 2022 Alec Delaney, for Adafruit Industries\n")
+            reqfile.write("#\n")
+            reqfile.write("# SPDX-License-Identifier: Unlicense\n")
+            if reqlist:
+                reqfile.write("\n")
+            for req in reqlist:
+                if req.startswith("OPTIONAL:"):
+                    optional_reqs.append(req[9:])
+                    continue
+                reqfile.write(req + "\n")
+
+        opt_fp = os.path.splitext(req_fp)[0] + "_opt.txt"
+
+        with open(opt_fp, mode="w", encoding="utf-8") as optfile:
+            optfile.write("# SPDX-FileCopyrightText: 2022 Alec Delaney, for Adafruit Industries\n")
+            optfile.write("#\n")
+            optfile.write("# SPDX-License-Identifier: Unlicense\n")
+            if optional_reqs:
+                optfile.write("\n")
+            for opt in optional_reqs:
+                optfile.write(opt + "\n")
 
 
 if __name__ == "__main__":
